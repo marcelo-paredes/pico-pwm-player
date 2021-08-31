@@ -19,7 +19,7 @@ int main() {
 
     using namespace picoPwm;
     picoPwm::Notes *notes = new picoPwm::Notes(picoPwm::equal, 440);
-    picoPwm::PWMPlayer *player = new picoPwm::PWMPlayer(pwmPin, 120, notes);
+    picoPwm::PWMPlayer *player = new picoPwm::PWMPlayer(pwmPin, 80, notes);
 
     list<NoteEvent> sequence {
         NoteEvent("C4", 16, 1000), NoteEvent("D4", 16, 1000), NoteEvent("E4", 16, 1000), NoteEvent("F4", 16, 1000),

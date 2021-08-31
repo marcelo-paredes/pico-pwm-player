@@ -36,7 +36,9 @@ PWMPlayer::~PWMPlayer() {
 }
 
 void PWMPlayer::playSequence(list<NoteEvent> sequence) {
-    float whole = 1000 * this->bpm / 60;
+    float oneMin = 60000.0;
+    float bpmFigure = 4;
+    float whole = (bpmFigure * oneMin) / (this->bpm);
     list<NoteEvent>::iterator it;
     for(it = sequence.begin(); it != sequence.end(); it++) {
         string note = it->note;
