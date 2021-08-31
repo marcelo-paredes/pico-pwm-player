@@ -19,9 +19,20 @@ PWMPlayer::PWMPlayer(uint gpioPin, uint bpm, Notes *notes, float q) {
     this->notes = notes;
 }
 
+PWMPlayer::PWMPlayer(uint gpioPin, uint bpm, NoteScale scale, float q) {
+    this->q = (q > 1) ? 1 : (q < 0 ? 0 : q);
+    this->bpm = bpm;
+    this->gpioPin = gpioPin;
+    this->pwm = new PWM(gpioPin);
+    this->notes = new Notes(scale);
+    this->ownNotes = true;
+}
+
 PWMPlayer::~PWMPlayer() {
     delete this->pwm;
-    delete this->notes;
+    if(ownNotes) {
+        delete this->notes;
+    }
 }
 
 void PWMPlayer::playSequence(list<NoteEvent> sequence) {

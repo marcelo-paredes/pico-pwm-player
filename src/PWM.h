@@ -18,9 +18,30 @@ class PWM {
         pwm_config config;
 
     public:
+        /**
+         * Constructs a PWM object and associates related pwm data to the pin number
+         * 
+         * @param pinNumber The gpio pin number to use for PWM
+         */
         PWM(uint pinNumber);
+
+        /**
+         * Destructor
+         */
         ~PWM();
-        void setFrequency(uint16_t frequuency);
+
+        /**
+         * Sets the PWNM frequency on the associated pin
+         * 
+         * @param frequency The frequency
+         */
+        void setFrequency(uint16_t frequency);
+
+        /**
+         * Sets the volume level on the associated pin
+         * 
+         * @param level The volume level - value in range of 0..10000
+         */
         void setLevel(uint16_t level);
 
     private:

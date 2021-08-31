@@ -5,15 +5,20 @@
 #include <string>
 
 namespace picoPwm {
+    /**
+     * Provides a simple representation of a note event for purposes
+     * of playing.
+     */
     class NoteEvent {
         public:
-            // note is the note name i uppercase, optionally a # or lowecase b, and the octave
-            //  "rest" or null are interpreted as a rest.
-            // figure is the inverse of the note duration fraction, 1 = full, 2, 4, 8,...  
-            //     using float so a dotted note could still be passed
-            // 0 <= q <= 1 is the note duration as a fraction of the whole note duration
-            //  i.e.: play onlu during 0.8 of the length of the figure
-            // -1 means use the default from the player
+            /**
+             *  Constructs a NoteEvent
+             *  @param note The note name
+             *  @param figure The note figure number (1 for whole, 2, 4, 8...)
+             *  @param level The volume level 0-10000
+             *  @param q The note duration in terms of the figure duration 0 < q <= 1.
+             *      The value -1 (the default value) means us the player's default.
+             */
             NoteEvent(string note, float figure, uint level, float q = -1);
         
         string note;
@@ -24,13 +29,48 @@ namespace picoPwm {
 
 
 
+    /**
+     * Configures a gpio pint to play PWM sound and plays
+     * sequences of note events.
+     */
+
     class PWMPlayer {
         public:
+            /**
+             * Constructs a PWMPlayer
+             * 
+             * @param gpioPin The gpio pin
+             * @param bpm The palyer's bpm
+             * @param notes The note frequency provider
+             * @param q the specified portion of actual note durations to play. The rest of the duration is set to silence.
+             */
             PWMPlayer(uint gpioPin, uint bpm, Notes *notes, float q = 0.8);
+
+            /**
+             * Constructs a PWMPlayer
+             * 
+             * @param gpioPin The gpio pin
+             * @param bpm The palyer's bpm
+             * @param scale The name of the scale to use for constructing a Notes provider
+             * @param q the specified portion of actual note durations to play. The rest of the duration is set to silence.
+             */
+            PWMPlayer(uint gpioPin, uint bpm, NoteScale scale, float q = 0.8);
+
+            /**
+             * Destructor
+             * 
+             * Cleans up resources owned by the PWMPlayer
+             */
             ~PWMPlayer();
+
+            /**
+             * Plays a notes sequence
+             * @param sequence The list of NoteEvents to play
+             */
             void playSequence(list<NoteEvent> sequence); 
 
         private:
+            bool ownNotes = false;
             Notes *notes;
             uint gpioPin;
             uint bpm;
