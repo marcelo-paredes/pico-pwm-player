@@ -5,12 +5,12 @@
 #include "math.h"
 
 int main() {
-    const uint LED_PIN = PICO_DEFAULT_LED_PIN;
+    /// Buzzer is on gpio pin 14
     uint pwmPin = 14;
 
     using namespace picoPwm;
     picoPwm::Notes *notes = new picoPwm::Notes(picoPwm::equal, 440);
-    picoPwm::PWMPlayer *player = new picoPwm::PWMPlayer(pwmPin, 80, notes);
+    picoPwm::PWMPlayer *player = new picoPwm::PWMPlayer(pwmPin, 80, notes, 0.5);
 
     list<NoteEvent> sequence {
         NoteEvent("C4", 16, 1000), NoteEvent("D4", 16, 1000), NoteEvent("E4", 16, 1000), NoteEvent("F4", 16, 1000),
@@ -40,4 +40,5 @@ int main() {
         player->playSequence(sequence);
     }    
     //delete player;
+    //delete notes;
 }
